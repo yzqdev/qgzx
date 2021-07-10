@@ -23,7 +23,7 @@
       <el-table-column prop="isSuper" label="管理员类型" :formatter="formatter">
       </el-table-column>
       <el-table-column label="操作" width="240">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button @click="editAdmin(scope.row)" type="primary" size="small"
             >查看</el-button
           >
@@ -53,46 +53,52 @@
   </div>
 </template>
 
-<script lang="ts">
-// @ is an alias to /src
-import { Vue, Component } from "vue-property-decorator";
-@Component
-export default class AdminList extends Vue {
-  tableData = [];
-  pageNum = 1;
-  fit = true;
-  searchText = "";
-  select = "0";
-  showAdminInfo = false;
-  adminInfo = {};
-  getAdminList() {
-    this.$http.get(`/admin/getAllAdmins?isSuper=${this.select}`).then((res) => {
-      console.log(res.data);
-      this.tableData = res.data.data;
-    });
-  }
-  formatter(row, column) {
-    return row.isSuper == "0" ? "普通管理员" : "超级管理员";
-  }
-  submitEditAdmin() {
-    this.$http.put("/admin/updateAdmin", this.adminInfo).then((res) => {
-      console.log(res);
-    });
-    this.showAdminInfo = false;
-  }
-  editAdmin(row) {
-    this.showAdminInfo = true;
-    let _row = row;
-    this.adminInfo = Object.assign({}, _row);
-  }
-  deleteAdmin(row) {
-    console.log(row.id);
-    this.$http.delete("/admin/deleteAdmin/" + row.id).then((res) => {
-      this.getAdminList();
-    });
-  }
+<script>
+export default {
+  data() {
+    return {
+      tableData: [],
+      pageNum: 1,
+      fit: true,
+      searchText: "",
+      select: "0",
+      showAdminInfo: false,
+      adminInfo: {},
+    };
+  },
+  methods: {
+    getAdminList() {
+      this.$http
+        .get(`/admin/getAllAdmins?isSuper=${this.select}`)
+        .then((res) => {
+          console.log(res.data);
+          this.tableData = res.data.data;
+        });
+    },
+    formatter(row, column) {
+      return row.isSuper == "0" ? "普通管理员" : "超级管理员";
+    },
+    submitEditAdmin() {
+      this.$http.put("/admin/updateAdmin", this.adminInfo).then((res) => {
+        console.log(res);
+      });
+      this.showAdminInfo = false;
+    },
+    editAdmin(row) {
+      this.showAdminInfo = true;
+      let _row = row;
+      this.adminInfo = Object.assign({}, _row);
+    },
+    deleteAdmin(row) {
+      console.log(row.id);
+      this.$http.delete("/admin/deleteAdmin/" + row.id).then((res) => {
+        this.getAdminList();
+      });
+    },
+  },
+
   created() {
     this.getAdminList();
-  }
-}
+  },
+};
 </script>

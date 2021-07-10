@@ -26,35 +26,38 @@
   </div>
 </template>
 
-<script lang="ts">
-// @ is an alias to /src
-import { Vue, Component } from "vue-property-decorator";
-@Component
-export default class AdminEdit extends Vue {
-  form = {
-    name: "",
-    pass: "",
-    confirmPass: "",
-    isSuper: "",
-  };
-  adminType = [
-    {
-      value: "0",
-      label: "普通管理员",
-    },
-    {
-      value: "1",
-      label: "超级管理员",
-    },
-  ];
+<script>
+export default {
+  data() {
+    return {
+      form: {
+        name: "yzq",
+        pass: "123456",
+        confirmPass: "123456",
+        isSuper: "1",
+      },
+      adminType: [
+        {
+          value: "0",
+          label: "普通管理员",
+        },
+        {
+          value: "1",
+          label: "超级管理员",
+        },
+      ],
+    };
+  },
 
-  onSubmit() {
-    this.$http.post(`/admin/reg`, this.form).then((res) => {
-      if (res.data.success) {
-        this.$message.success({ message: "成功" });
-        this.$router.push("/admin/list");
-      }
-    });
-  }
-}
+  methods: {
+    onSubmit() {
+      this.$http.post(`/admin/reg`, this.form).then((res) => {
+        if (res.data.success) {
+          this.$message.success({ message: "成功" });
+          this.$router.push("/admin/list");
+        }
+      });
+    },
+  },
+};
 </script>
