@@ -32,6 +32,7 @@ public class JobController {
         //if (user == null) {
         //    return new Result<>(false, "您还没有登陆", null);
         //}
+        System.out.println(job.getHireNum());
         System.out.println("到达这里");
 
         boolean bool = false;
@@ -39,7 +40,7 @@ public class JobController {
         try {
 
             bool = jobService.save(job);
-            return ResultUtil.success("添加成功");
+            return ResultUtil.success("添加成功",job);
         } catch (Exception e) {
             e.printStackTrace();
 

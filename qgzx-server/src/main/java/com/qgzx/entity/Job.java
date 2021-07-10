@@ -17,7 +17,7 @@ import java.sql.Date;
 @TableName(value = "Job")
 public class Job {
 	private static final long serialVersionUID = 1L;
-	@TableId(value = "id",type = IdType.ASSIGN_UUID)
+	@TableId(value = "id",type = IdType.AUTO)
     private String id;
     private String name;
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

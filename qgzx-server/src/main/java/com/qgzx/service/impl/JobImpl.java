@@ -17,8 +17,6 @@ public class JobImpl extends ServiceImpl<JobMapper, Job> implements JobService {
     private JobService jobService;
 
 
-
-
     public Boolean updateJob(Job job) throws Exception {
         int hasUpdate = 1;
         System.out.println(job);
@@ -34,8 +32,6 @@ public class JobImpl extends ServiceImpl<JobMapper, Job> implements JobService {
     }
 
 
-
-
     @Override
     public Job getJobById(String id) {
         return jobMapper.selectById(id);
@@ -45,8 +41,6 @@ public class JobImpl extends ServiceImpl<JobMapper, Job> implements JobService {
     public int getCount() {
         return jobMapper.getCount();
     }
-
-
 
 
 }
