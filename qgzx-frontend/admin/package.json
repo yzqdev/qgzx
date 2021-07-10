@@ -1,26 +1,25 @@
 {
-  "name": "admin",
-  "version": "0.1.0",
-  "private": true,
+  "name": "bpass-web-vue",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "vue-cli-service serve",
-    "build": "vue-cli-service",
-    "lint": "vue-cli-service lint",
-    "ncu": "ncu&&ncu -u &&yarn"
+    "dev": "vite --host",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-vue": "^1.2.4",
     "axios": "^0.21.1",
-    "element-ui": "^2.15.3",
+    "element-plus": "^1.0.2-beta.55",
+    "less": "^4.1.1",
     "prettier": "^2.3.2",
-    "vue": "^2.6.14",
-    "vue-class-component": "^7.2.6",
-    "vue-property-decorator": "^9.1.2",
-    "vue-router": "^3.5.2"
+    "vue": "^3.1.4",
+    "vue-router": "^4.0.10",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-typescript": "~4.5.13",
-    "@vue/cli-service": "~4.5.13",
-    "typescript": "~4.3.5",
-    "vue-template-compiler": "^2.6.14"
+    "@vue/compiler-sfc": "^3.1.4",
+    "dayjs": "^1.10.6",
+    "trim-html": "^0.1.9",
+    "vite": "^2.4.1"
   }
 }

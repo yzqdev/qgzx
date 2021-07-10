@@ -15,7 +15,6 @@
       ><el-form-item label="发布时间">
         <el-date-picker
           v-model="form.time"
-          align="right"
           type="datetime"
           placeholder="选择日期"
           :picker-options="pickerOptions"
@@ -39,21 +38,23 @@
       ><el-form-item label="截止时间">
         <el-date-picker
           v-model="form.deadline"
-          align="right"
           type="date"
           placeholder="选择日期"
           :picker-options="pickerOptions"
         >
         </el-date-picker></el-form-item
       ><el-form-item label="性别">
-        <el-input v-model="form.sex"></el-input> </el-form-item
+        <el-select v-model="form.sex">
+          <el-option label="男" value="0"></el-option>
+          <el-option label="女" value="1"></el-option>
+        </el-select> </el-form-item
       ><el-form-item label="招聘人数">
         <el-input v-model="form.hireNum"></el-input> </el-form-item
       ><el-form-item label="工作内容">
         <el-input v-model="form.content"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addSchool">{{
+        <el-button type="primary" @click="addJob">{{
           id ? "修改" : "添加"
         }}</el-button>
       </el-form-item>
@@ -61,82 +62,104 @@
   </div>
 </template>
 
-<script lang="ts">
-// @ is an alias to /src
-import { Vue, Component, Prop } from "vue-property-decorator";
-@Component
-export default class JobEdit extends Vue {
-  form = {};
-  @Prop() private id?: String;
-  pickerOptions = {
-    disabledDate(time) {
-      return time.getTime() > Date.now();
-    },
+<script>
+export default {
+  data() {
+    return {
+      form: {
+        title: "这是标题",
+        name: "这是名字",
+        location: "地址",
+        worktime: "工作室就",
+        time: new Date(),
+        workplace: "啊啊啊",
+        type: "1",
+        pay: "啊啊啊",
+        deadline: new Date(),
+        sex: "1",
+        hireNum: 34,
+        content: "这是工作内容",
+      },
+      options: [
+        {
+          value: "1",
+          label: "固定",
+        },
+        {
+          value: "0",
+          label: "临时",
+        },
+      ],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
 
-    shortcuts: [
-      {
-        text: "今天",
-        onClick(picker) {
-          picker.$emit("pick", new Date());
-        },
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            },
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            },
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            },
+          },
+        ],
       },
-      {
-        text: "昨天",
-        onClick(picker) {
-          const date = new Date();
-          date.setTime(date.getTime() - 3600 * 1000 * 24);
-          picker.$emit("pick", date);
-        },
-      },
-      {
-        text: "一周前",
-        onClick(picker) {
-          const date = new Date();
-          date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-          picker.$emit("pick", date);
-        },
-      },
-    ],
-  };
-  options = [
-    {
-      value: "1",
-      label: "固定",
-    },
-    {
-      value: "0",
-      label: "临时",
-    },
-  ];
-  addSchool() {
-    if (this.id) {
-      this.$http.put("/updateJob", this.form).then((res) => {
-        this.$message.success({
-          message: res.data.message,
+    };
+  },
+  props: {
+    id: { type: String },
+  },
+
+  methods: {
+    addJob() {
+      if (this.id) {
+        this.$http.put("/updateJob", this.form).then((res) => {
+          this.$message.success({
+            message: res.data.msg,
+          });
+          this.$router.push("/job/list");
         });
-        this.$router.push("/job/list");
-      });
-    } else {
-      this.$http.post("/addJob", this.form).then((res) => {
-        this.$message.success({
-          message: res.data.message,
+      } else {
+        this.$http.post("/addJob", this.form).then((res) => {
+          this.$message.success({
+            message: res.data.msg,
+          });
+          this.$router.push("/job/list");
         });
-        this.$router.push("/job/list");
+      }
+    },
+    getJobData() {
+      this.$http.get("/getJobById/" + this.id).then((res) => {
+        this.form = res.data.data;
       });
-    }
-  }
-  getJobData() {
-    this.$http.get("/getJobById/" + this.id).then((res) => {
-      this.form = res.data.data;
-    });
-  }
+    },
+  },
   created() {
-    this.id && this.getJobData();
-  }
-}
+    if (this.id) {
+      this.getJobData();
+    }
+  },
+};
 </script>
 <style scoped>
 .home {
+  width: 100%;
   margin: 30px;
 }
 </style>

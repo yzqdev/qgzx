@@ -2,10 +2,9 @@
   <div></div>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-@Component
-export default class ResourceManager extends Vue {
+<script >
+
+export default   {
   // 对象
 }
 </script>

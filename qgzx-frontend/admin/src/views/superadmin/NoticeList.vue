@@ -1,13 +1,14 @@
 <template>
   <div class="home">
-    <el-table :data="tableData">
-      <el-table-column prop="id" label="ID" width="140"> </el-table-column>
-      <el-table-column prop="name" label="用户名" width="120">
+    <el-table :data="tableData" fit>
+      <el-table-column prop="id" label="ID"  > </el-table-column>
+      <el-table-column prop="title" label="标题"  >
       </el-table-column>
-      <el-table-column prop="password" label="密码" width="120">
+      <el-table-column prop="subTitle" label="副标题" >
+      </el-table-column>   <el-table-column prop="content" label="内容" width="120">
       </el-table-column>
-      <el-table-column label="操作" width="240">
-        <template slot-scope="scope">
+      <el-table-column label="操作"  >
+        <template #default="scope">
           <el-button @click="editAdmin(scope.row)" type="primary" size="small"
             >查看</el-button
           >
@@ -39,34 +40,41 @@
   </div>
 </template>
 
-<script lang="ts">
-// @ is an alias to /src
-import { Vue, Component } from "vue-property-decorator";
-@Component
-export default class AdminList extends Vue {
-  tableData = [];
-  pageNum = 1;
-  showAdminInfo = false;
-  adminInfo = {};
-  getAdminList() {
-    this.$http
-      .get(`/superManager/getAllAcounts/${this.pageNum}`)
-      .then((res) => {
-        this.tableData = res.data.data.list;
-      });
-  }
-  editAdmin(row) {
-    this.showAdminInfo = true;
-    console.log(row);
-    this.adminInfo = row;
-  }
-  deleteAdmin(row) {
-    this.$http.post("/superManager/deleteManager/" + row.id).then((res) => {
-      console.log(res);
-    });
-  }
+<script>
+export default {
+  data() {
+    return {
+      tableData: [],
+      pageNum: 1,
+      showAdminInfo: false,
+      adminInfo: {},
+    };
+  },
   created() {
     this.getAdminList();
-  }
-}
+  },
+  methods: {
+    getAdminList() {
+      this.$http
+        .get(`/getAllNotices`)
+        .then((res) => {
+          this.tableData = res.data.data;
+        });
+    },
+    editAdmin(row) {
+      this.showAdminInfo = true;
+      console.log(row);
+      this.adminInfo = row;
+    },
+    deleteAdmin(row) {
+      this.$http.delete("/deleteNotice/" + row.id).then((res) => {
+        console.log(res);
+        if (res ) {
+          this.$message.success({message:res.data.msg})
+          this.getAdminList()
+        }
+      });
+    },
+  },
+};
 </script>

@@ -30,13 +30,13 @@
             type="password"
             placeholder="password"
             v-model="param.pass"
-            @keyup.enter.native="submitForm()"
+            @keyup="submitForm"
           >
             <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
           </el-input>
         </el-form-item>
         <div class="login-btn">
-          <el-button type="primary" @click="submitForm()">登录</el-button>
+          <el-button type="primary" @click="submitForm">登录</el-button>
         </div>
         <p class="login-tips">Tips : 用户名和密码随便填。</p>
       </el-form>
@@ -44,51 +44,54 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-@Component
-export default class Login extends Vue {
-  param = {
-    isSuper: "0",
-    name: "admin",
-    pass: "123123",
-  };
-  options = [
-    {
-      value: "1",
-      label: "超级管理员",
-    },
-    {
-      value: "0",
-      label: "普通管理员",
-    },
-  ];
-  rules = {
-    name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-    pass: [{ required: true, message: "请输入密码", trigger: "blur" }],
-  };
-
-  submitForm() {
-    this.$refs.login.validate((valid) => {
-      if (valid) {
-        if (this.param.isSuper == "0") {
-          this.$http.post("/admin/login", this.param).then((res) => {
-            console.log(this.param);
-            if (res.data.success) {
-              this.$router.push("/");
-            } else {
-              this.$message.error({ message: res.data.message });
-            }
-          });
+<script>
+export default {
+  data() {
+    return {
+      param: {
+        isSuper: "0",
+        name: "admin",
+        pass: "123123",
+      },
+      options: [
+        {
+          value: "1",
+          label: "超级管理员",
+        },
+        {
+          value: "0",
+          label: "普通管理员",
+        },
+      ],
+      rules: {
+        name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        pass: [{ required: true, message: "请输入密码", trigger: "blur" }],
+      },
+    };
+  },
+  methods: {
+    submitForm() {
+      this.$refs.login.validate((valid) => {
+        if (valid) {
+          if (this.param.isSuper == "0") {
+            this.$http.post("/admin/login", this.param).then((res) => {
+              console.log(this.param);
+              if (res.data.success) {
+                this.$router.push("/");
+              } else {
+                this.$message.error({ message: res.data.message });
+              }
+            });
+          }
+        } else {
+          this.$message.error("请输入账号和密码");
+          console.log("error submit!!");
+          return false;
         }
-      } else {
-        this.$message.error("请输入账号和密码");
-        console.log("error submit!!");
-        return false;
-      }
-    });
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -97,7 +100,7 @@ export default class Login extends Vue {
   width: 100%;
   height: 100%;
 
-  background-image: url(../assets/img/1.jpg);
+  background: url("../assets/img/1.jpg");
   background-size: 100%;
 }
 .ms-title {

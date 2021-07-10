@@ -4,12 +4,12 @@
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
         <el-menu router default-active="1">
           <el-submenu index="1">
-            <template slot="title"
-              ><i class="el-icon-message"></i>操作</template
-            >
+            <template #title><i class="el-icon-message"></i>操作</template>
             <el-menu-item-group>
-              <template slot="title">管理员操作</template>
-              <el-menu-item index="/admin/create">编辑管理员</el-menu-item>
+              <template #title>管理员操作</template>
+              <el-menu-item index="/admin/admin-create"
+                >编辑管理员</el-menu-item
+              >
               <el-menu-item index="/admin/list">管理员列表</el-menu-item>
             </el-menu-item-group>
 
@@ -23,9 +23,7 @@
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"
-              ><i class="el-icon-message"></i>系统管理</template
-            >
+            <template #title><i class="el-icon-message"></i>系统管理</template>
             <el-menu-item index="/user-manager">用户管理</el-menu-item>
             <el-menu-item index="/dictionary">字典管理</el-menu-item>
             <el-menu-item index="/resource-manager">资源管理</el-menu-item>
@@ -35,16 +33,18 @@
       </el-aside>
 
       <el-container>
-        <el-header style="text-align: right; font-size: 12px">
-          <el-dropdown>
-            <i class="el-icon-setting" style="margin-right: 15px"></i>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>新增</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
-            </el-dropdown-menu>
+        <el-header>
+          <el-dropdown style="text-align: right">
+            <i class="el-icon-setting" style="margin-right: 15px"></i
+            ><span>王小虎</span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>查看</el-dropdown-item>
+                <el-dropdown-item>新增</el-dropdown-item>
+                <el-dropdown-item>删除</el-dropdown-item>
+              </el-dropdown-menu></template
+            >
           </el-dropdown>
-          <span>王小虎</span>
         </el-header>
 
         <el-main>
@@ -54,9 +54,5 @@
     </el-container>
   </div>
 </template>
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-@Component
-export default class Main extends Vue {}
-</script>
+<script></script>
 <style scoped></style>

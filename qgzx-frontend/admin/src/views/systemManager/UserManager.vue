@@ -2,12 +2,8 @@
   <div></div>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-@Component
-export default class userManager extends Vue {
-  // 对象
-}
+<script >
+
 </script>
 
 <style scoped></style>

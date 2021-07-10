@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script >
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component

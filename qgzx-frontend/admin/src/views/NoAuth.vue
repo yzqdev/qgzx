@@ -1,7 +1,7 @@
 <template>
   <div class="error-page">
-    <div class="error-code">4<span>0</span>4</div>
-    <div class="error-desc">啊哦~ 你所访问的页面不存在</div>
+    <div class="error-code">4<span>0</span>3</div>
+    <div class="error-desc">啊哦~ 你没有权限访问该页面哦</div>
     <div class="error-handle">
       <router-link to="/">
         <el-button type="primary" size="large">返回首页</el-button>
@@ -14,12 +14,14 @@
 </template>
 
 <script>
-import { Vue, Component } from "vue-property-decorator";
-@Component
-export default class NotFound extends Vue {
-  goBack() {
-    this.$router.go(-1);
-  }
+
+export default  {
+  name:'NoAuth',
+ methods:{
+   goBack() {
+     this.$router.go(-1);
+   }
+ }
 }
 </script>
 
@@ -38,7 +40,7 @@ export default class NotFound extends Vue {
   line-height: 1;
   font-size: 250px;
   font-weight: bolder;
-  color: #2d8cf0;
+  color: #f02d2d;
 }
 .error-code span {
   color: #00a854;

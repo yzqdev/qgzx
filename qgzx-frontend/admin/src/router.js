@@ -1,6 +1,5 @@
-import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
-import Main from "../views/Main.vue";
+import { createRouter, createWebHistory } from "vue-router";
+import Main from "@/views/Main.vue";
 import AdminEdit from "@/views/superadmin/AdminEdit.vue";
 import AdminList from "@/views/superadmin/AdminList.vue";
 import NoticeEdit from "@/views/superadmin/NoticeEdit.vue";
@@ -12,23 +11,20 @@ import JobList from "@/views/superadmin/JobList.vue";
 import AuthManager from "@/views/systemManager/AuthManager.vue";
 import ResourceManager from "@/views/systemManager/ResourceManager.vue";
 import UserManager from "@/views/systemManager/UserManager.vue";
-import Dictionary from "@/views/systemManager/Dictionary.vue";
 // import SystemConstants from "@/views/systemOperation/SystemConstants.vue";
 import Login from "@/views/Login.vue";
-Vue.use(VueRouter);
+import NotFound from "@views/NotFound.vue";
 
-const routes: Array<RouteConfig> = [
-  {
-    path: "*",
-    redirect: "/404",
-  },
+const routes = [
+  { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
   { path: "/login", component: Login },
+  { path: "/", redirect: "/admin/admin-create" },
   {
-    path: "/",
+    path: "/admin",
     name: "Home",
     component: Main,
     children: [
-      { path: "/admin/create", component: AdminEdit },
+      { path: "admin-create", component: AdminEdit },
       { path: "/admin/edit/:id", component: AdminEdit, props: true },
       { path: "/admin/list", component: AdminList },
       { path: "/notice/create", component: NoticeEdit },
@@ -52,16 +48,12 @@ const routes: Array<RouteConfig> = [
         component: UserManager,
         meta: { title: "用户管理" },
       },
-      {
-        path: "/dictionary",
-        component: Dictionary,
-        meta: { title: "系统字典" },
-      },
     ],
   },
 ];
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(),
   routes,
 });
 
