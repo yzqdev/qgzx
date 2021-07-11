@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import {adminReg} from "@/utils/apis/admin";
+
 export default {
   data() {
     return {
@@ -51,7 +53,7 @@ export default {
 
   methods: {
     onSubmit() {
-      this.$http.post(`/admin/reg`, this.form).then((res) => {
+      adminReg(  this.form).then((res) => {
         if (res.data.success) {
           this.$message.success({ message: "成功" });
           this.$router.push("/admin/list");

@@ -1,19 +1,17 @@
 # admin
 
-## Project setup
+## 安装依赖
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 启动命令
 ```
-yarn serve
+yarn dev
 ```
 
-### Compiles and minifies for production
+### 打包编译
 ```
 yarn build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

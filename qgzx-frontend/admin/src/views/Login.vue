@@ -10,7 +10,7 @@
         class="ms-content"
       >
         <el-form-item prop="isSuper">
-          <el-select v-model="param.isSuper" placeholder="请选择您的身份">
+          <el-select v-model="param.isSuper" style="width: 100%" placeholder="请选择您的身份">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import {adminLogin} from "@/utils/apis/admin";
+
 export default {
   data() {
     return {
@@ -74,9 +76,12 @@ export default {
       this.$refs.login.validate((valid) => {
         if (valid) {
           if (this.param.isSuper == "0") {
-            this.$http.post("/admin/login", this.param).then((res) => {
+           adminLogin(  this.param).then((res) => {
               console.log(this.param);
               if (res.data.success) {
+                this.$message.success({
+                  message:res.data.msg
+                })
                 this.$router.push("/");
               } else {
                 this.$message.error({ message: res.data.message });

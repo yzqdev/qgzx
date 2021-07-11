@@ -3,7 +3,7 @@ package com.qgzx.controller;
 import com.qgzx.dto.Result;
 import com.qgzx.entity.Notice;
 import com.qgzx.service.NoticeService;
-import org.aspectj.weaver.ast.Not;
+import com.qgzx.util.ResultUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,19 +24,25 @@ public class NoticeContrller {
     public Result addNotice(@RequestBody Notice notice) {
 
         noticeService.save(notice);
-        return new Result<>("shibail", notice);
+        return ResultUtil.success("添加成功",notice);
     }
 
     @GetMapping(value = "/getAllNotices")
     public Result getAllNotices(){
         List<Notice> noticeList=noticeService.list();
 
-        return  new Result<>("ssdf",noticeList);
+        return  ResultUtil.success(noticeList);
     }
     @DeleteMapping(value = "/deleteNotice/{id}")
     public Result deleteNotice(@PathVariable("id")  String id){
         Notice deletedNotice=noticeService.getById(id);
       boolean flag=  noticeService.removeById(id);
-        return  new Result<>("aaa",flag);
+        return  ResultUtil.success("删除成功",flag);
+    }
+    @PutMapping(value = "/updateNotice")
+    public Result updateNotice(@RequestBody Notice notice){
+       boolean flag= noticeService.updateById(notice);
+       Notice newNotice=noticeService.getById(notice.getId());
+        return  ResultUtil.success("修改成功",newNotice);
     }
 }

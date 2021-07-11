@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import { addJob, getJobById, updateJob } from "@/utils/apis/jobs";
+
 export default {
   data() {
     return {
@@ -129,24 +131,24 @@ export default {
   methods: {
     addJob() {
       if (this.id) {
-        this.$http.put("/updateJob", this.form).then((res) => {
+        updateJob(this.form).then((data) => {
           this.$message.success({
-            message: res.data.msg,
+            message: data.msg,
           });
           this.$router.push("/job/list");
         });
       } else {
-        this.$http.post("/addJob", this.form).then((res) => {
+        addJob(this.form).then((data) => {
           this.$message.success({
-            message: res.data.msg,
+            message: data.msg,
           });
           this.$router.push("/job/list");
         });
       }
     },
     getJobData() {
-      this.$http.get("/getJobById/" + this.id).then((res) => {
-        this.form = res.data.data;
+      getJobById(this.id).then((data) => {
+        this.form =  data.data;
       });
     },
   },
