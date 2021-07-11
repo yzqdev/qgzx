@@ -9,7 +9,7 @@
       <el-table-column label="操作" width="240">
         <template #default="scope">
           <el-button
-            @click="editjob(scope.$index, scope.row)"
+            @click="editJob(scope.$index, scope.row)"
             type="primary"
             size="small"
             >查看</el-button
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import {deleteJobById, getAllJobs} from "@/utils/apis/jobs";
+
 export default {
   data() {
     return {
@@ -36,17 +38,20 @@ export default {
   },
   methods: {
     getjobList() {
-      this.$http.get(`/getAllJobs`).then((res) => {
-        this.jobTable = res.data.data;
+      getAllJobs( ).then((data) => {
+        this.jobTable =  data.data;
       });
     },
-    editjob(index, row) {
+    editJob(index, row) {
       this.$router.push(`/job/edit/${row.id}`);
     },
 
     deletejob(row) {
-      this.$http.delete("/deleteJob/" + row.id).then((res) => {
+      deleteJobById(  row.id).then((data) => {
+      if (data.success) {
+        this.$message.success({message:data.msg})
         this.getjobList();
+      }
       });
     },
     submitjobInfo() {

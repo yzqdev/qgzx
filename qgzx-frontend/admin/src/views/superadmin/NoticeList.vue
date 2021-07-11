@@ -1,13 +1,12 @@
 <template>
   <div class="home">
     <el-table :data="tableData" fit>
-      <el-table-column prop="id" label="ID"  > </el-table-column>
-      <el-table-column prop="title" label="标题"  >
+      <el-table-column prop="id" label="ID"> </el-table-column>
+      <el-table-column prop="title" label="标题"> </el-table-column>
+      <el-table-column prop="subTitle" label="副标题"> </el-table-column>
+      <el-table-column prop="content" label="内容" width="120">
       </el-table-column>
-      <el-table-column prop="subTitle" label="副标题" >
-      </el-table-column>   <el-table-column prop="content" label="内容" width="120">
-      </el-table-column>
-      <el-table-column label="操作"  >
+      <el-table-column label="操作">
         <template #default="scope">
           <el-button @click="editAdmin(scope.row)" type="primary" size="small"
             >查看</el-button
@@ -18,60 +17,72 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="管理员信息" :visible.sync="showAdminInfo">
-      <el-form :model="adminInfo">
-        <el-form-item label="用户名" label-width="40">
-          <el-input v-model="adminInfo.name" autocomplete="off"></el-input>
+    <el-dialog title="管理员信息"  v-model="showNoticeDialog">
+      <el-form :model="notice" label-width="100px">
+        <el-form-item label="标题"  >
+          <el-input v-model="notice.title" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" label-width="40">
-          <el-input v-model="adminInfo.password" autocomplete="off"></el-input>
+        <el-form-item label="副标题"  >
+          <el-input v-model="notice.subTitle" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="学校" label-width="40">
-          <el-input v-model="adminInfo.school" autocomplete="off"></el-input>
+        <el-form-item label="内容" >
+          <el-input v-model="notice.content" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="showAdminInfo = false">取 消</el-button>
-        <el-button type="primary" @click="showAdminInfo = false"
+      <template #footer class="dialog-footer">
+        <el-button @click="showNoticeDialog = false">取 消</el-button>
+        <el-button type="primary" @click="updateDialogNotice"
           >确 定</el-button
         >
-      </div>
+      </template>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import {deleteNoticeById, getAllNotices, updateNotice} from "@/utils/apis/notice";
+
 export default {
   data() {
     return {
       tableData: [],
       pageNum: 1,
-      showAdminInfo: false,
-      adminInfo: {},
+      showNoticeDialog: false,
+      notice: {title: "这是标题",
+        subTitle: "这是副标题",
+        content: "这是正文",},
     };
   },
   created() {
-    this.getAdminList();
+    this.getNoticeList();
   },
   methods: {
-    getAdminList() {
-      this.$http
-        .get(`/getAllNotices`)
-        .then((res) => {
-          this.tableData = res.data.data;
-        });
+    getNoticeList() {
+      getAllNotices().then((data) => {
+        this.tableData = data.data;
+      });
     },
     editAdmin(row) {
-      this.showAdminInfo = true;
+      this.showNoticeDialog = true;
       console.log(row);
-      this.adminInfo = row;
+      this.notice = row;
+    },
+    updateDialogNotice(){
+      updateNotice(this.notice).then((data ) => {
+        if (data.success ) {
+          this.$message.success({
+            message:data.msg
+          })
+          this.getNoticeList()
+          this.showNoticeDialog=false
+        }
+      })
     },
     deleteAdmin(row) {
-      this.$http.delete("/deleteNotice/" + row.id).then((res) => {
-        console.log(res);
-        if (res ) {
-          this.$message.success({message:res.data.msg})
-          this.getAdminList()
+      deleteNoticeById(row.id).then((data) => {
+        if (data.success) {
+          this.$message.success({ message: data.msg });
+          this.getNoticeList();
         }
       });
     },
