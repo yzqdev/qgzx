@@ -79,7 +79,7 @@ public class JobController {
             if (!bool) {
                 return ResultUtil.fail("删除失败");
             }
-            return ResultUtil.success("删除成功");
+            return ResultUtil.success("删除成功",bool);
         } catch (Exception e) {
             e.printStackTrace();
         }

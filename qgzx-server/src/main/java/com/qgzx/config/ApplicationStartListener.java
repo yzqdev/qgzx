@@ -22,7 +22,7 @@ public class ApplicationStartListener implements ApplicationListener<WebServerIn
         InetAddress address = null;
         try {
             address = InetAddress.getLocalHost();
-            System.out.println( "http://" + address.getHostAddress() + ":" + port+"/swagger-ui/");System.out.println( "http://" + address.getHostAddress() + ":" + port+"/doc.html");
+            System.out.println( "http://" + address.getHostAddress() + ":" + port+"/swagger-ui/");System.out.println( "http://" + address.getHostAddress() + ":" + port);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

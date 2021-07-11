@@ -2,7 +2,6 @@ package com.qgzx.util;
 
 
 import com.qgzx.dto.Result;
-import org.jetbrains.annotations.NotNull;
 
 public class ResultUtil {
 

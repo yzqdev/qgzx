@@ -4,7 +4,6 @@ package com.qgzx.controller;
 import com.qgzx.dto.Result;
 import com.qgzx.entity.Admin;
 import com.qgzx.service.AdminService;
-import com.qgzx.util.ResultEnum;
 import com.qgzx.util.ResultUtil;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +35,9 @@ public class AdminController {
 
             adminService.login(admin);
             session.setAttribute("admin", admin);
-            return ResultUtil.success("登录成功了");
+            return ResultUtil.success("登录成功了", admin);
         } catch (Exception e) {
-            return ResultUtil.fail( "登录失败", null);
+            return ResultUtil.fail("登录失败", null);
         }
 
     }
@@ -49,7 +48,7 @@ public class AdminController {
 
             boolean newadmin = adminService.save(admin);
             System.out.println(newadmin);
-            return ResultUtil.success("添加成功",admin);
+            return ResultUtil.success("添加成功", admin);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,9 +58,14 @@ public class AdminController {
 
     @GetMapping("/getAllAdmins")
     public Result getAllAdmins(@RequestParam("isSuper") String isSuper) {
+        List<Admin> adminList;
         try {
-            List<Admin> adminList = adminService.getAllAdmins(isSuper);
-            System.out.println(adminList);
+            if ("".equals(isSuper)) {
+                adminList = adminService.list();
+            } else {
+                adminList = adminService.getAllAdmins(isSuper);
+            }
+
 
             return ResultUtil.success("获取成功", adminList);
         } catch (Exception e) {
@@ -85,7 +89,7 @@ public class AdminController {
     public Result updateAdmin(@RequestBody Admin admin) {
         try {
             adminService.updateById(admin);
-            return ResultUtil.success("成功");
+            return ResultUtil.success("成功",admin);
         } catch (Exception e) {
             e.printStackTrace();
         }

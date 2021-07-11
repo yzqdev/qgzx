@@ -22,6 +22,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Resource
     private AdminMapper adminMapper;
 
+
     @Override
     public String login(Admin admin) {
 
@@ -64,6 +65,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     @Override
     public List<Admin> getAllAdmins(String isSuper) {
+
         return adminMapper.getAllAdmins(isSuper);
     }
 }
